@@ -85,7 +85,8 @@ function UpDateEvent(){
 	PlayState.lastX = newX;
 	PlayState.lasty = newY;
 	PlayState.LastTag = ifno.Table.Game.Tag;
-	PlayState.Butt.onclick = NextEvent;
+    PlayState.Butt.onclick = NextEvent;
+    PlayState.Butt.setAttribute("class", "btn btn-success");
 	tim = null;
 }
 
