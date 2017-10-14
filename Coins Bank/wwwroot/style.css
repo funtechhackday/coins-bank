@@ -1,0 +1,75 @@
+﻿.Centr {
+	margin-left: 35vw;
+	margin-top: 35vh;
+	width: 30vw;
+	height: 30vh;
+}
+
+.Centr button {
+	width: 100%;
+}
+
+.Centr label {
+	width: 30%;
+}
+
+.Centr input {
+	width: 100%;
+}
+
+
+.Steps {
+	height: 80vh;
+	width: 100vw;
+	margin: 0;
+}
+
+body {
+	background-color: white;
+}
+
+.Hand {
+	display: inline-block;
+	margin-top: 0;
+	margin-bottom: auto;
+	margin-left: 0;
+	height: 100%;
+	width: 15%;
+	background-color: rgba(0,0,0,0.1);
+}
+
+.Card {
+	margin: 0;
+	font-size: 10em;
+	text-align: center;
+	white-space: nowrap;
+	height: 20%;
+}
+
+.Pl {
+	height: 80%;
+	width: 100%;
+}
+
+.Card:hover {
+	cursor: pointer;
+}
+
+.Card.Active {
+	color: red;
+}
+
+.Field {
+	display: inline-block;
+	margin-top: 0;
+	margin-bottom: auto;
+	margin-left: 0;
+	height: 100%;
+	width: 80%;
+}
+
+.Cart {
+	height: 10%;
+	width: 100%;
+	font-size: 3em;
+}
