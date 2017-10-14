@@ -8734,9 +8734,9 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "F:\\cb\\Coins Bank\\Coins Bank\\Coins Bank.csproj",
-      "projectName": "Coins Bank",
-      "projectPath": "F:\\cb\\Coins Bank\\Coins Bank\\Coins Bank.csproj",
+      "projectUniqueName": "F:\\cb\\Coins Bank\\Coins Bank\\Coins_Bank.csproj",
+      "projectName": "Coins_Bank",
+      "projectPath": "F:\\cb\\Coins Bank\\Coins Bank\\Coins_Bank.csproj",
       "packagesPath": "C:\\Users\\prifio\\.nuget\\packages\\",
       "outputPath": "F:\\cb\\Coins Bank\\Coins Bank\\obj\\",
       "projectStyle": "PackageReference",

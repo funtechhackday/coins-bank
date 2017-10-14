@@ -4,9 +4,9 @@ function init() {
 	info = {
 		Table: {
 			NickSeats: [],
+			YouSeat: 0,
 			Game: {
 				State: 0,//0 lay 1 wait 2 play
-				YouSeat: 0,
 				Cards: [{
 					Direct: 0,
 					HP: 1
