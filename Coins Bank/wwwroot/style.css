@@ -1,75 +1,161 @@
-﻿.Centr {
-	margin-left: 35vw;
-	margin-top: 35vh;
-	width: 30vw;
-	height: 30vh;
+.Centr{
+  margin-left: 35vw;
+  margin-top: 35vh;
+  width: 30vw;
+  height: 30vh;
+
+}
+.Centr button{
+  width: 100%;
+}
+.Centr label{
+  width: 30%;
+}
+.Centr input{
+  width: 100%;
+}
+.Steps{
+  height: 80vh;
+  width: 100vw;
+  margin: 0;
+}
+body{
+  background-color: white;
+}
+.Hand{
+  display: inline-block;
+  margin-top: 0;
+  margin-bottom: auto;
+  margin-left: 0;
+  height: 100%;
+  width: 15%;
+  background-color: rgba(0,0,0,0.1);
+}
+.Card{
+  margin: 0;
+    font-size: 10em;
+    text-align: center;
+    white-space: nowrap;
+    height: 20%;
+}
+.Pl{
+  height: 80%;
+  width: 100%;
+}
+.Card:hover{
+  cursor: pointer;
+}
+.Card.Active{
+  color: red;
+}
+.Field{
+  display: inline-block;
+  margin-top: 0;
+  margin-bottom: auto;
+  margin-left: 0;
+  height: 100%;
+  width: 80%;
+}
+.Cart{
+  height: 10%;
+  width: 100%;
+  font-size: 3em;
+}
+table{
+  text-align: center;
+  font-size: 3em;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+table button{
+  font-size: 0.33em;
+  margin-top: 0;
+}
+tbody{
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+tr{
+  height: 33%;
+  width: 100%;
+  margin: 0;
+}
+td{
+  height: 33%;
+  width: 12%;
+}
+.Vorota{
+  height: 33%;
+  width: 2%;
+  background-color: #c7c7c7;
+  border-color: #c7c7c7;
+  color: #0012ff;
+}
+.bl{
+  color: #f3f3f3;
+  background-color: #97a1ff;
+}
+.wh{
+    background-color: #f3f3f3;
+    color :#97a1ff;
+}
+.PointActive:hover{
+		cursor:pointer; 
+}
+.VorotaActive{
+  background-color:#fb9d9d;
+}
+.Score{
+  height: 50%;
+  margin-bottom: 0;
+}
+.Score p.Name{
+  display:inline-block;
+  width:40%;
+  font-size:0.5em;
+
+}
+.whiteScore{
+  height: 100%;
+  margin:0;
+  margin-bottom: 0;
+  margin-left:0;
+  width: 49.5%;
+  text-align: left;
+  display: inline-block;
+  font-size:3em;
+}
+.whiteScore p{
+  margin-bottom: 0;
+  margin-right:0;
+  color :#f3f3f3;
+  width: 8%;
+  background-color: #97a1ff;
+
+  border-radius: 0 25px 0 0;
 }
 
-.Centr button {
-	width: 100%;
+.blackScore{
+  font-size: 3em;
+  margin-bottom: 0;
+  margin:0;
+  height: 100%;
+  width: 49%;
+  text-align: right;
+  display: inline-block;
 }
-
-.Centr label {
-	width: 30%;
+.blackScore p{
+  margin-bottom: 0;
+  width: 8%;
+  background-color: #f3f3f3;
+  color: #97a1ff;
+  border-radius: 25px 0 0 0;
 }
-
-.Centr input {
-	width: 100%;
+.Shibe{
+  color: gold;
 }
-
-
-.Steps {
-	height: 80vh;
-	width: 100vw;
-	margin: 0;
-}
-
-body {
-	background-color: white;
-}
-
-.Hand {
-	display: inline-block;
-	margin-top: 0;
-	margin-bottom: auto;
-	margin-left: 0;
-	height: 100%;
-	width: 15%;
-	background-color: rgba(0,0,0,0.1);
-}
-
-.Card {
-	margin: 0;
-	font-size: 10em;
-	text-align: center;
-	white-space: nowrap;
-	height: 20%;
-}
-
-.Pl {
-	height: 80%;
-	width: 100%;
-}
-
-.Card:hover {
-	cursor: pointer;
-}
-
-.Card.Active {
-	color: red;
-}
-
-.Field {
-	display: inline-block;
-	margin-top: 0;
-	margin-bottom: auto;
-	margin-left: 0;
-	height: 100%;
-	width: 80%;
-}
-
-.Cart {
-	height: 10%;
-	width: 100%;
-	font-size: 3em;
+div.Play *:hover{
+  cursor: default;
 }
