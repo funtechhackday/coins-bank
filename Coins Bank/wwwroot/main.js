@@ -119,9 +119,17 @@ function CardLayEvent(num) {
 function NextEvent() {
 	PlayState.Butt.onclick = null;
 	PlayState.Butt.setAttribute("Class", PlayState.Butt.getAttribute("class") + " disabled");
+	$.post('./api/Next', {
+		Nick: PlayerNick
+	}, function () { }, 'json');
 }
 
 function EntTurnEvent() {
+	LayState.EndTurn.setAttribute("class", "display:none;");
+	$.post('./api/Ready', {
+		Nick: PlayerNick,
+		Table: LayState.FieldCard
+	}, function () { }, 'json');
 }
 
 function PickCardEvent(num) {
