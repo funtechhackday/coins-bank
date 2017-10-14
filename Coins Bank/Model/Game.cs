@@ -16,6 +16,7 @@ namespace Coins_Bank.Model
         private int HowStart;
         private Player[] Players;
         private bool RoundEnden;
+        private int Tag = 0;
 
         public void PlayerReady(int[][] PlayerTable, int NumPlayer)
         {
@@ -45,6 +46,7 @@ namespace Coins_Bank.Model
                     return;
                 }
                 Players[0].IsReady = Players[1].IsReady = false;
+                Tag = Utily.GetTag();
                 if (HorizDirect == 1)
                 {
                     if (WasherY == 0)
@@ -163,6 +165,9 @@ namespace Coins_Bank.Model
             ans.NowWasherX = WasherY;
             ans.NowWasherY = WasherX;
             ans.Cards = Players[NumPlayer].GetInfo();
+            ans.Result1 = Players[0].Result;
+            ans.Result2 = Players[1].Result;
+            ans.Tag = Tag;
             return ans;
         }
     }
@@ -180,5 +185,8 @@ namespace Coins_Bank.Model
         public int WasherDirect { get; set; }
         public int NowWasherX { get; set; }
         public int NowWasherY { get; set; }
+        public int Result1 { get; set; }
+        public int Result2 { get; set; }
+        public int Tag { get; set; }
     }
 }

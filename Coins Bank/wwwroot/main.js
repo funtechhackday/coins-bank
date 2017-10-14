@@ -24,7 +24,6 @@ $.get = function (url, data, CallBack) {
 	});
 };
 
-
 function init() {
 	info = {
 		Table: {
@@ -38,7 +37,10 @@ function init() {
 				}],
 				WasherDirect: 0,
 				NowWasherX: -1,
-				NowWasherY: -1
+				NowWasherY: -1,
+				Result1: 0,
+				Result2: 0,
+				Tag: 0
 			}
 		}
 	};
@@ -58,7 +60,8 @@ function init() {
 		Field: [], 
 		Butt: null,
 		lastX: null,
-		lasty: null		
+		lasty: null,
+		LastTag: -1
 	}
 	MainDiv = document.getElementById("Main");
 	NowState = "LogIn";
@@ -70,7 +73,7 @@ function init() {
 function UpDateEvent(){
 	var newX = info.Table.Game.NowWasherX;
 	var newY = info.Table.Game.NowWasherY;
-	if(newX == PlayState.lastX && newY == PlayState.lasty)
+	if (PlayState.LastTag == info.Table.Game.Tag)
 		return;
 	PlayState.Field[PlayState.lastX][PlayState.lastY].innerHTML="";
 	var sp = document.createElement("i");
@@ -81,7 +84,8 @@ function UpDateEvent(){
 		PlayState.Field[newX][newY].appendChild(sp);
 	PlayState.lastX = newX;
 	PlayState.lasty = newY;
-	PlayState.onclick = NextEvent;
+	PlayState.LastTag = ifno.Table.Game.Tag;
+	PlayState.Butt.onclick = NextEvent;
 	tim = null;
 }
 
@@ -133,7 +137,14 @@ function LogInEvent() {
 	tim = setInterval(UpDate, 1000);
 }
 
-function UpDateCallBack() {
+function UpDateCallBack(NewInfo) {
+	info = NewInfo;
+	if (info.Table.Game.State == 1 && NowState != "Play")
+		BuildPlay();
+	else if (info.Table.Game.State == 0 && NowState != "Lay")
+		BuildLay();
+	if (NowState == "Play")
+		UpDateEvent();
 }
 
 function UpDate() {
@@ -172,10 +183,10 @@ function BuildLay() {
 	MainDiv.innerHTML = `<div class = "Score">
     <div id = "blSc" class = "blackScore">
     <p class = "Name" id = "Player1"> Player1</p>
-      <p style = "display: inline-block;">1</p>
+      <p style = "display: inline-block;" id="Res1">1</p>
     </div>
     <div id = "whSc" class = "whiteScore">
-      <p id = "Player2" style = "display: inline-block;">2</p> <p class = "Name"> Player2</p></div>
+      <p id = "Player2" style = "display: inline-block;" id="Res2">2</p> <p class = "Name"> Player2</p></div>
   </div>
   <div class = "Steps">
       <table>
@@ -240,6 +251,10 @@ function BuildLay() {
 	LayState.Cards = document.getElementById("Cards");
 	LayState.EndTurn = document.getElementById("EndTurn");
 	LayState.EndTurn.onclick = EndTurnEvent;
+	var res = document.getElementById("Res1");
+	res.innerText = info.Table.Game.Result1;
+	var res = document.getElementById("Res2");
+	res.innerText = info.Table.Game.Result2;
 }
 
 function BuildPlay() {
@@ -248,10 +263,10 @@ function BuildPlay() {
       <div class = "Score">
     <div id = "blSc" class = "blackScore">
     <p class = "Name"> Player1</p>
-      <p style = "display: inline-block;">1</p>
+      <p style = "display: inline-block;" id="Res1">1</p>
     </div>
     <div id = "whSc" class = "whiteScore">
-      <p style = "display: inline-block;">2</p> <p class = "Name"> Player2</p></div>
+      <p style = "display: inline-block;" id="Res2">2</p> <p class = "Name"> Player2</p></div>
   </div> <div class = "Steps Play">
       <table>
             <tbody>
@@ -295,7 +310,7 @@ function BuildPlay() {
           </table>
       </div>
       <div class = "Cart">
-        <button id = "NextEvent" type="button" class="btn btn-success btn-block" onclick	= "NextEvent">Далее</button>
+        <button id = "NextEvent" type="button" class="btn btn-success btn-block" onclick="NextEvent">Далее</button>
       </div>`;
     PlayState.Butt = document.getElementById("NextEvent");
     PlayState.Field = [[], [], []];
@@ -305,7 +320,11 @@ function BuildPlay() {
 		var y = i % 8;
 		PlayState.Field[x][y] = elem;
 	}
-	
+	var res = document.getElementById("Res1");
+	res.innerText = info.Table.Game.Result1;
+	var res = document.getElementById("Res2");
+	res.innerText = info.Table.Game.Result2;
+	PlayState.LastTag = -1;
 }
 
 function BuildLogIn() {
