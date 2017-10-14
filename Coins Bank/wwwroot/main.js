@@ -1,5 +1,30 @@
 window.onload = init;
 
+$.post = function (url, data, CallBack, dataType) {
+	return jQuery.ajax({
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/' + dataType
+		},
+		'type': 'POST',
+		'url': url,
+		'data': JSON.stringify(data),
+		'dataType': dataType,
+		'success': CallBack
+	});
+};
+
+$.get = function (url, data, CallBack) {
+	return jQuery.ajax({
+		'type': 'GET',
+		'url': url,
+		'data': data,
+		'response': 'xml',
+		'success': CallBack
+	});
+};
+
+
 function init() {
 	info = {
 		Table: {
@@ -11,7 +36,7 @@ function init() {
 					Direct: 0,
 					HP: 1
 				}],
-				WasherDirect: [],
+				WasherDirect: 0,
 				NowWasherX: -1,
 				NowWasherY: -1
 			}
@@ -39,6 +64,7 @@ function init() {
 	NowState = "LogIn";
 	BuildLogIn();
 	IconName = ["right", "top", "left", "bottom"];
+	PlayerNick = "";
 }
 
 function UpDateEvent(){
@@ -48,7 +74,7 @@ function UpDateEvent(){
 		return;
 	PlayState.Field[PlayState.lastX][PlayState.lastY].innerHTML="";
 	var sp = document.createElement("i");
-	sp.setAttribute("class", "glyphicon glyphicon-triangle-" + IconName[info.Table.Game.WasherDirect[newx][newY]]);
+	sp.setAttribute("class", "glyphicon glyphicon-triangle-" + IconName[info.Table.Game.WasherDirect]);
 	PlayState.Field[newX][newY].innerHTML=`<i class="glyphicon glyphicon-record" 
 		aria-hidden="true">
 		</i>`;
@@ -56,6 +82,7 @@ function UpDateEvent(){
 	PlayState.lastX = newX;
 	PlayState.lasty = newY;
 	PlayState.onclick = NextEvent;
+	tim = null;
 }
 
 function CardLayEvent(num) {
@@ -83,10 +110,12 @@ function CardLayEvent(num) {
 		BuildCardTable(elem, -1);
 	}
 }
-function NextEvent(){
+
+function NextEvent() {
 	PlayState.Butt.onclick = null;
 	PlayState.Butt.setAttribute("Class", PlayState.Butt.getAttribute("class") + " disabled");
 }
+
 function EntTurnEvent() {
 }
 
@@ -100,7 +129,17 @@ function PickCardEvent(num) {
 }
 
 function LogInEvent() {
+	PlayerNick = LogInState.NickInput.value;
+	tim = setInterval(UpDate, 1000);
+}
 
+function UpDateCallBack() {
+}
+
+function UpDate() {
+	$.post('./api/Get', {
+		Nick: PlayerNick
+	}, UpDateCallBack);
 }
 
 function BuildCardTable(elem, num) {
@@ -192,7 +231,7 @@ function BuildLay() {
 		var x = (i - i % 8) / 8;
 		var y = i % 8;
 		LayState.Field[x][y] = elem;
-		if (info.Table.Game.YouSeat == (x + y + 1) % 2 && (x != 0 || y != 0) && (x != 2 || y != 0) && (x != 0 || y != 7) && (x != 2 || y != 7)) {
+		if (info.Table.YouSeat == (x + y + 1) % 2 && (x != 0 || y != 0) && (x != 2 || y != 0) && (x != 0 || y != 7) && (x != 2 || y != 7)) {
 			elem.setAttribute("class", elem.getAttribute("class") + " PointActive");
 			elem.onclick = CreateNiceFun(CardLayEvent, i);
 		}
@@ -202,7 +241,8 @@ function BuildLay() {
 	LayState.EndTurn = document.getElementById("EndTurn");
 	LayState.EndTurn.onclick = EndTurnEvent;
 }
-function BuildPlay(){
+
+function BuildPlay() {
 	NowState = "Play";
 	MainDiv.innerHTML = `
       <div class = "Score">
