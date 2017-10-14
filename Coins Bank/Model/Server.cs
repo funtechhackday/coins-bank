@@ -12,7 +12,7 @@ namespace Coins_Bank.Model
         {
             NowGame = new Game();
         }
-        public void Get(string nick)
+        public ServerInfo Get(string nick)
         {
             var info = new ServerInfo();
             info.Table = new TableInfo();
@@ -29,7 +29,9 @@ namespace Coins_Bank.Model
                 info.Table.YouSeat = 1;
                 info.Table.Game = NowGame.Get(1);
             }
+            return info;
         }
+
         public void Next(string nick)
         {
             if (nick == "Player1")

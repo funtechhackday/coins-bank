@@ -1,0 +1,4 @@
+F:\cb\Coins Bank\Coins Bank\obj\Debug\netcoreapp2.0\Coins_Bank.csprojResolveAssemblyReference.cache
+F:\cb\Coins Bank\Coins Bank\obj\Debug\netcoreapp2.0\Coins_Bank.csproj.CoreCompileInputs.cache
+F:\cb\Coins Bank\Coins Bank\obj\Debug\netcoreapp2.0\Coins_Bank.AssemblyInfoInputs.cache
+F:\cb\Coins Bank\Coins Bank\obj\Debug\netcoreapp2.0\Coins_Bank.AssemblyInfo.cs

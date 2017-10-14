@@ -57,12 +57,12 @@ function init() {
 		NowCard: 0
 	};
 	PlayState = {
-		Field: [], 
+		Field: [],
 		Butt: null,
 		lastX: null,
 		lasty: null,
 		LastTag: -1
-	}
+	};
 	MainDiv = document.getElementById("Main");
 	NowState = "LogIn";
 	BuildLogIn();
@@ -253,7 +253,7 @@ function BuildLay() {
 	LayState.EndTurn.onclick = EndTurnEvent;
 	var res = document.getElementById("Res1");
 	res.innerText = info.Table.Game.Result1;
-	var res = document.getElementById("Res2");
+	res = document.getElementById("Res2");
 	res.innerText = info.Table.Game.Result2;
 }
 
@@ -322,7 +322,7 @@ function BuildPlay() {
 	}
 	var res = document.getElementById("Res1");
 	res.innerText = info.Table.Game.Result1;
-	var res = document.getElementById("Res2");
+	res = document.getElementById("Res2");
 	res.innerText = info.Table.Game.Result2;
 	PlayState.LastTag = -1;
 }
@@ -355,8 +355,8 @@ function CreateNiceFun(CallBack, par) {
 		var num = inp;
 		return function () {
 			CallBack(num);
-		}
-	}
+		};
+	};
 	return hlp(par);
 }
 
