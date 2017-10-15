@@ -86,7 +86,7 @@ function UpDateEvent(){
 	PlayState.lasty = newY;
 	PlayState.LastTag = ifno.Table.Game.Tag;
     PlayState.Butt.onclick = NextEvent;
-    PlayState.Butt.setAttribute("class", "btn btn-success");
+    PlayState.Butt.setAttribute("class", "btn btn-success btn-block");
 	tim = null;
 }
 
@@ -136,9 +136,9 @@ function PickCardEvent(num) {
 	if(LayState.CardUsde[LayState.NowCard] == 1)
 		LayState.Cards.children[LayState.NowCard].setAttribute("class", "btn");
 	else
-		LayState.Cards.children[LayState.NowCard].setAttribute("class", "btn-primary");	
+		LayState.Cards.children[LayState.NowCard].setAttribute("class", "btn btn-primary");	
 	LayState.NowCard = num;
-	LayState.Cards.children[num].setAttribute("class", "btn-success");
+	LayState.Cards.children[num].setAttribute("class", "btn btn-success");
 }
 
 function LogInEvent() {
