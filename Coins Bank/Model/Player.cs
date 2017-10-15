@@ -31,7 +31,9 @@ namespace Coins_Bank.Model
 
         public List<Card> DropCards(List<int> NumCards)
         {
-            var ans = new List<Card>(NumCards.Count);
+            var ans = new List<Card>();
+            for (int i = 0; i < NumCards.Count; i++)
+                ans.Add(null);
             var lost = new List<Card>();
             int[] usd = new int[CountCards];
             for (var i = 0; i < CountCards; ++i)
@@ -57,6 +59,13 @@ namespace Coins_Bank.Model
                 ans[i] = new Card(Cards[i].Direct, Cards[i].HP);
             }
             return ans;
+        }
+
+        public Player()
+        {
+            Cards = new List<Card>();
+            Result = 0;
+            IsReady = false;
         }
     }
 }

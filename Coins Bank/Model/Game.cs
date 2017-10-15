@@ -16,7 +16,7 @@ namespace Coins_Bank.Model
         private int HowStart;
         private Player[] Players;
         private bool RoundEnden;
-        private int Tag = 0;
+        private int Tag = Utily.Next();
 
         public void PlayerReady(int[][] PlayerTable, int NumPlayer)
         {
@@ -52,24 +52,32 @@ namespace Coins_Bank.Model
                     if (WasherY == 0)
                         WasherY = 1;
                     else
-                        WasherY++;
+                        WasherY--;
+                    if (WasherX == 0 && WasherY == 0)
+                        NowDirect = 0;
+                    if (WasherX == 7 && WasherY == 0)
+                        NowDirect = 2;
                 }
                 if (HorizDirect == 3)
                 {
                     if (WasherY == 2)
                         WasherY = 1;
                     else
-                        WasherY--;
+                        WasherY++;
+                    if (WasherX == 0 && WasherY == 2)
+                        NowDirect = 0;
+                    if (WasherX == 7 && WasherY == 2)
+                        NowDirect = 2;
                 }
                 HorizDirect = -1;
                 while (WasherX >= 0 && WasherX < 8 && (Table[WasherY][WasherX] == null || Table[WasherY][WasherX].Direct == NowDirect))
                 {
-                    if (WasherX == 0 && WasherY != 1)
+                    if (WasherX == 0 && WasherY != 1 && NowDirect == 2)
                     {
                         WasherY = 1;
                         NowDirect = 0;
                     }
-                    else if (WasherX == 7 && WasherY != 1)
+                    else if (WasherX == 7 && WasherY != 1 && NowDirect == 0)
                     {
                         WasherY = 1;
                         NowDirect = 2;
@@ -130,11 +138,12 @@ namespace Coins_Bank.Model
             }
             Players[0].IsReady = Players[1].IsReady = false;
             Players[0].AddCard(NextCard());
+            Players[1].AddCard(NextCard());
             NowState = GameState.Lay;
         }
         private Card NextCard()
         {
-            int HP = Utily.Next() % 5 / 2;
+            int HP = Utily.Next() % 5 / 2 + 1;
             int dir = Utily.Next() % 4;
             return new Card(dir, HP);
         }

@@ -8,7 +8,8 @@ namespace Coins_Bank.Controllers
 {
     public class apiController : Controller
     {
-        private static Model.Server Server = new Model.Server();
+        static Model.Server Server;
+        static bool WasBuild = false;
 
         [HttpPost]
         public void Next([FromBody] NickInfo info)
@@ -25,6 +26,9 @@ namespace Coins_Bank.Controllers
         [HttpGet]
         public Model.ServerInfo Get(string Nick)
         {
+            if (!WasBuild)
+                Server = new Model.Server();
+            WasBuild = true;
             return Server.Get(Nick);
         }
     }
