@@ -59,7 +59,7 @@ function init() {
 	PlayState = {
         Field: [],
 		Butt: null,
-		lastX: null,
+		lastX: -2,
 		lasty: null,
 		LastTag: -1,
 		LeftVor: null,
@@ -72,36 +72,82 @@ function init() {
 	PlayerNick = "";
 }
 
-function UpDateEvent(){
-	var newX = info.Table.Game.NowWasherX;
-	var newY = info.Table.Game.NowWasherY;
-	if (PlayState.LastTag == info.Table.Game.Tag)
-		return;
-	if (PlayState.lastX != -1)
-		PlayState.Field[PlayState.lastX][PlayState.lastY].innerHTML="";
-	var sp = document.createElement("i");
-	sp.setAttribute("class", "glyphicon glyphicon-triangle-" + IconName[info.Table.Game.WasherDirect]);
-	if (newY >= 0 && newY < 8) {
-		PlayState.Field[newX][newY].innerHTML = `<i class="glyphicon glyphicon-record" 
+function DrowShibe() {
+    if (info.Table.Game.State != 2)
+        return;
+    var newX = info.Table.Game.NowWasherX;
+    var newY = info.Table.Game.NowWasherY;
+    
+    if (PlayState.lastX != -1) {
+        PlayState.Field[PlayState.lastX][PlayState.lastY].innerHTML = "";
+    } else {
+        PlayState.lastX = newX;
+        PlayState.lastY = newY;
+        PlayState.Field[PlayState.lastX][PlayState.lastY].innerHTML = `<i class="glyphicon glyphicon-record" 
 		aria-hidden="true">
 		</i>`;
-		PlayState.Field[newX][newY].appendChild(sp);
-	}
-	else if (newY < 0) {
-		PlayState.LeftVor.innerHTML = `<i class="glyphicon glyphicon-record"
+        return;
+    }
+    if (PlayState.lastyY != newY) {
+        PlayState.Field[PlayState.lastX][newY].innerHTML = `<i class="glyphicon glyphicon-record" 
 		aria-hidden="true">
 		</i>`;
-		PlayState.LeftVor.setAttribute("class", "Vorota VorotaActive Shibe");
-	}
-	else {
-		PlayState.RightVor.innerHTML = `<i class="glyphicon glyphicon-record"
+        if (PlayState.lastX == newX) {
+            var sp = document.createElement("i");
+            sp.setAttribute("class", "glyphicon glyphicon-triangle-" + IconName[info.Table.Game.WasherDirect]);
+            PlayState.Field[newX][newY].appendChild(sp); 
+        }
+        PlayState.lastY = newY;
+    } else {
+        if (newX - PlayState.lastX > 0) {
+            PlayState.lastX++;
+            if (PlayState.lastX < 8) {
+                PlayState.Field[PlayState.lastX][PlayState.lastY].innerHTML = `<i class="glyphicon glyphicon-record" 
 		aria-hidden="true">
 		</i>`;
-		PlayState.RightVor.setAttribute("class", "Vorota VorotaActive Shibe");
-	}
-	PlayState.lastX = newX;
-	PlayState.lastY = newY;
-	PlayState.LastTag = info.Table.Game.Tag;
+                if (PlayState.lastX == newX) {
+                    var sp = document.createElement("i");
+                    sp.setAttribute("class", "glyphicon glyphicon-triangle-" + IconName[info.Table.Game.WasherDirect]);
+                    PlayState.Field[newX][newY].appendChild(sp);
+
+                }
+            } else {
+                PlayState.RightVor.innerHTML = `<i class="glyphicon glyphicon-record"
+		aria-hidden="true">
+		</i>`;
+                PlayState.RightVor.setAttribute("class", "Vorota VorotaActive Shibe");
+            }
+        } else {
+            PlayState.lastX--;
+            if (PlayState.lastX >= 0) {
+                PlayState.Field[PlayState.lastX][PlayState.lastY].innerHTML = `<i class="glyphicon glyphicon-record" 
+		aria-hidden="true">
+		</i>`;
+                if (PlayState.lastX == newX) {
+                    var sp = document.createElement("i");
+                    sp.setAttribute("class", "glyphicon glyphicon-triangle-" + IconName[info.Table.Game.WasherDirect]);
+                    PlayState.Field[newX][newY].appendChild(sp);
+
+                }
+            } else {
+                PlayState.LeftVor.innerHTML = `<i class="glyphicon glyphicon-record"
+		aria-hidden="true">
+		</i>`;
+                PlayState.LeftVor.setAttribute("class", "Vorota VorotaActive Shibe");
+            }
+        }
+    }
+}
+
+function UpDateEvent() {
+   
+    var newX = info.Table.Game.NowWasherX;
+    var newY = info.Table.Game.NowWasherY;
+    
+    while (newX != PlayState.lastX && newY != PlayState.lastY)
+        setTimeout(DrowShibe, 100);
+    /*
+    PlayState.LastTag = info.Table.Game.Tag;
     PlayState.Butt.onclick = NextEvent;
     PlayState.Butt.setAttribute("class", "btn btn-success btn-block");
 	tim = null;
@@ -109,7 +155,7 @@ function UpDateEvent(){
 	var res = document.getElementById("Res1");
 	res.innerText = info.Table.Game.Result1;
 	res = document.getElementById("Res2");
-	res.innerText = info.Table.Game.Result2;
+	res.innerText = info.Table.Game.Result2;*/
 }
 
 function CardLayEvent(num) {
@@ -154,7 +200,8 @@ function EndTurnEvent() {
 	$.post('./api/Ready', {
 		Nick: PlayerNick,
 		Table: LayState.FieldCard
-	}, function () { }, 'json');
+    }, function () { }, 'json');
+    
 }
 
 function PickCardEvent(num) {
