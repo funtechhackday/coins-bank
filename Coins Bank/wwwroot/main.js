@@ -57,11 +57,13 @@ function init() {
 		NowCard: 0
 	};
 	PlayState = {
-		Field: [],
+        Field: [],
 		Butt: null,
 		lastX: null,
 		lasty: null,
-		LastTag: -1
+		LastTag: -1,
+		LeftVor: null,
+		RightVor: null
 	};
 	MainDiv = document.getElementById("Main");
 	NowState = "LogIn";
@@ -75,19 +77,39 @@ function UpDateEvent(){
 	var newY = info.Table.Game.NowWasherY;
 	if (PlayState.LastTag == info.Table.Game.Tag)
 		return;
-	PlayState.Field[PlayState.lastX][PlayState.lastY].innerHTML="";
+	if (PlayState.lastX != -1)
+		PlayState.Field[PlayState.lastX][PlayState.lastY].innerHTML="";
 	var sp = document.createElement("i");
 	sp.setAttribute("class", "glyphicon glyphicon-triangle-" + IconName[info.Table.Game.WasherDirect]);
-	PlayState.Field[newX][newY].innerHTML=`<i class="glyphicon glyphicon-record" 
+	if (newY >= 0 && newY < 8) {
+		PlayState.Field[newX][newY].innerHTML = `<i class="glyphicon glyphicon-record" 
 		aria-hidden="true">
 		</i>`;
 		PlayState.Field[newX][newY].appendChild(sp);
+	}
+	else if (newY < 0) {
+		PlayState.LeftVor.innerHTML = `<i class="glyphicon glyphicon-record"
+		aria-hidden="true">
+		</i>`;
+		PlayState.LeftVor.setAttribute("class", "Vorota VorotaActive Shibe");
+	}
+	else {
+		PlayState.RightVor.innerHTML = `<i class="glyphicon glyphicon-record"
+		aria-hidden="true">
+		</i>`;
+		PlayState.RightVor.setAttribute("class", "Vorota VorotaActive Shibe");
+	}
 	PlayState.lastX = newX;
-	PlayState.lasty = newY;
-	PlayState.LastTag = ifno.Table.Game.Tag;
+	PlayState.lastY = newY;
+	PlayState.LastTag = info.Table.Game.Tag;
     PlayState.Butt.onclick = NextEvent;
     PlayState.Butt.setAttribute("class", "btn btn-success btn-block");
 	tim = null;
+	PlayState.Butt.setAttribute("class", "btn btn-success btn-block");
+	var res = document.getElementById("Res1");
+	res.innerText = info.Table.Game.Result1;
+	res = document.getElementById("Res2");
+	res.innerText = info.Table.Game.Result2;
 }
 
 function CardLayEvent(num) {
@@ -97,8 +119,10 @@ function CardLayEvent(num) {
 	var elem = LayState.Field[x][y];
 	for (var i = 0; i < 3; i++) {
 		for (var j = 0; j < 8; j++) {
-			if (Table[i][j] == LayState.NowCard && (i != x || j != y))
-				Table[i][j] = -1;
+            if (Table[i][j] == LayState.NowCard && (i != x || j != y)) {
+                Table[i][j] = -1;
+                BuildCardTable(LayState.Field[i][j], -1);
+            }
 		}
 	}
 	if (Table[x][y] != LayState.NowCard) {
@@ -124,8 +148,9 @@ function NextEvent() {
 	}, function () { }, 'json');
 }
 
-function EntTurnEvent() {
-	LayState.EndTurn.setAttribute("class", "display:none;");
+function EndTurnEvent() {
+    LayState.EndTurn.setAttribute("style", "display:none;");
+    LayState.Cards.setAttribute("style", "display:none");
 	$.post('./api/Ready', {
 		Nick: PlayerNick,
 		Table: LayState.FieldCard
@@ -134,7 +159,7 @@ function EntTurnEvent() {
 
 function PickCardEvent(num) {
 	if(LayState.CardUsde[LayState.NowCard] == 1)
-		LayState.Cards.children[LayState.NowCard].setAttribute("class", "btn");
+		LayState.Cards.children[LayState.NowCard].setAttribute("class", "btn btn-basic");
 	else
 		LayState.Cards.children[LayState.NowCard].setAttribute("class", "btn btn-primary");	
 	LayState.NowCard = num;
@@ -157,7 +182,7 @@ function UpDateCallBack(NewInfo) {
 }
 
 function UpDate() {
-	$.post('./api/Get', {
+	$.get('./api/Get', {
 		Nick: PlayerNick
 	}, UpDateCallBack);
 }
@@ -167,24 +192,30 @@ function BuildCardTable(elem, num) {
 	if (num != -1) {
 		elem.innerText = info.Table.Game.Cards[num].HP;
 		var sp = document.createElement("i");
-		sp.setAttribute("class", "glyphicon glyphicon-triangle-" + IconName[info.Table.Game.Cards[i].Direct]);
+		sp.setAttribute("class", "glyphicon glyphicon-triangle-" + IconName[info.Table.Game.Cards[num].Direct]);
 		elem.appendChild(sp);
 	}
 }
 
 function BuildCards() {
 	var CardArr = info.Table.Game.Cards;
+	LayState.CardUsde = [];
 	for (var i = 0; i < CardArr.length; i++) {
+		LayState.CardUsde[i] = 0;
 		var btn = document.createElement("button");
-		btn.setAttribute("class", "btn btn-primary");
+		if (i != 0)
+			btn.setAttribute("class", "btn btn-primary");
+		else
+			btn.setAttribute("class", "btn btn-success");
 		btn.setAttribute("type", "button");
 		btn.onclick = CreateNiceFun(PickCardEvent, i);
 		btn.innerText = CardArr[i].HP;
 		var sp = document.createElement("i");
 		sp.setAttribute("class", "glyphicon glyphicon-triangle-" + IconName[CardArr[i].Direct]);
 		btn.appendChild(sp);
+		LayState.Cards.appendChild(btn);
 	}
-	LayState.NowCard = 0;
+	LayState.NowCard = 0;	
 }
 
 function BuildLay() {
@@ -209,7 +240,7 @@ function BuildLay() {
               <td id = "td4" class="wh"></td>
               <td id = "td5" class = "bl"></td>
               <td id = "td6" class="wh"></td>
-              <td id = "td7" class = "bl">\</td>
+              <td id = "td7" class = "bl">\\</td>
               <td  class= "Vorota"></td>
             </tr>
             <tr id="tr1">
@@ -226,7 +257,7 @@ function BuildLay() {
             </tr>
               <tr id ="tr2">
                 <td class= "Vorota"></td>
-                <td id = "td16" class="wh">\</td>
+                <td id = "td16" class="wh">\\</td>
                 <td id = "td17" class = "bl"></td>
                 <td id = "td18" class="wh"></td>
                 <td id = "td19" class = "bl"></td>
@@ -262,8 +293,9 @@ function BuildLay() {
 	LayState.EndTurn.onclick = EndTurnEvent;
 	var res = document.getElementById("Res1");
 	res.innerText = info.Table.Game.Result1;
-	res = document.getElementById("Res2");
+	res = document.getElementById("Player2");
 	res.innerText = info.Table.Game.Result2;
+	BuildCards();
 }
 
 function BuildPlay() {
@@ -280,7 +312,7 @@ function BuildPlay() {
       <table>
             <tbody>
             <tr id = "tr0">
-              <td class= "Vorota Shibe"><i class="glyphicon glyphicon-record" aria-hidden="true"></i></td>
+              <td class= "Vorota"></td>
               <td id = "td0" class="wh"> </td>
               <td id = "td1" class = "bl"></td>
               <td id = "td2" class="wh"></td>
@@ -289,10 +321,10 @@ function BuildPlay() {
               <td id = "td5" class = "bl"></td>
               <td id = "td6" class="wh"></td>
               <td id = "td7" class = "bl"></td>
-              <td  class= "Vorota"></td>
+              <td class= "Vorota"></td>
             </tr>
             <tr id="tr1">
-              <td class= "Vorota VorotaActive"></td>
+              <td class= "Vorota VorotaActive" id="LftVor"></td>
               <td id = "td8" class = "bl"></td>
               <td id = "td9" class="wh"></td>
               <td id = "td10" class = "bl"></td>
@@ -301,7 +333,7 @@ function BuildPlay() {
               <td id = "td13" class="wh"></td>
               <td id = "td14" class = "bl"></td>
               <td id = "td15" class="wh"></td>
-              <td class= "Vorota VorotaActive"></td>
+              <td class= "Vorota VorotaActive" id="RghtVor"></td>
             </tr>
               <tr id ="tr2">
                 <td class= "Vorota"></td>
@@ -329,11 +361,11 @@ function BuildPlay() {
 		var y = i % 8;
 		PlayState.Field[x][y] = elem;
 	}
-	var res = document.getElementById("Res1");
-	res.innerText = info.Table.Game.Result1;
-	res = document.getElementById("Res2");
-	res.innerText = info.Table.Game.Result2;
 	PlayState.LastTag = -1;
+	PlayState.lastX = -1;
+	PlayState.lastY = -1;
+	PlayState.LeftVor = document.getElementById("LftVor");
+	PlayState.RightVor = document.getElementById("RghtVor");
 }
 
 function BuildLogIn() {
